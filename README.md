@@ -14,4 +14,7 @@ To learn more about virtual environments, see https://realpython.com/python-virt
 # Dependencies Installations
 
 We'll use pip freeze to put all of our dependencies in a requirements.txt and install from that file when setting up the dependencies for the project.
+This requirements.txt will be tracked in git for the dependencies required for the environment. Whenever dependencies are updated, make sure to update
+the requirements.txt file so that it is always up to date.
+
 See https://pip.pypa.io/en/stable/cli/pip_freeze/ for the documentation
