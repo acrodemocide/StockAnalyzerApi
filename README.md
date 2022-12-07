@@ -17,4 +17,6 @@ We'll use pip freeze to put all of our dependencies in a requirements.txt and in
 This requirements.txt will be tracked in git for the dependencies required for the environment. Whenever dependencies are updated, make sure to update
 the requirements.txt file so that it is always up to date.
 
+To use: pip freeze > requirements.txt
+
 See https://pip.pypa.io/en/stable/cli/pip_freeze/ for the documentation
