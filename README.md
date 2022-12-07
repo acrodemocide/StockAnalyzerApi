@@ -10,3 +10,8 @@ To activate the virtual environment: venv\Scripts\activate
 To deactivate the virtual environment: deactivate
 
 To learn more about virtual environments, see https://realpython.com/python-virtual-environments-a-primer/
+
+# Dependencies Installations
+
+We'll use pip freeze to put all of our dependencies in a requirements.txt and install from that file when setting up the dependencies for the project.
+See https://pip.pypa.io/en/stable/cli/pip_freeze/ for the documentation
