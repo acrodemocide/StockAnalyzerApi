@@ -20,9 +20,3 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-class TestViewSet():
-  """
-  API endpoint that just grabs some data without authentication requirements.
-  """
-  queryset = [1, 2, 3, 4, 5]
