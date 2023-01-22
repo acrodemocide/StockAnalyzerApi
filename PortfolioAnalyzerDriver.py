@@ -22,7 +22,7 @@ benchmarks_arr = ['AMRMX', 'ANWPX', 'AMECX', 'ABNDX',
 
 full_list = benchmarks_arr + user_input_arr
 
-#                     20%       65%     10%      5%
+#                     20%       65%     10%      5%m,
 aggressive_list = ['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']
 
 #                   25%     40%      20%      15%

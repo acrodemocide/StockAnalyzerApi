@@ -4,7 +4,8 @@ from Analyzer import views
 
 urlpatterns = [
     path('stocks/', views.StockList.as_view()),
-    path('stocks/<int:pk>/', views.StockDetail.as_view())
+    path('stocks/<int:pk>/', views.StockDetail.as_view()),
+    path('stocks/backtest/', views.BackTestResults.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
