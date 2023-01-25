@@ -225,6 +225,10 @@ def yearly_return(p, res, date_list):
     exp_val -= 1
     exp_val = 100*exp_val
     return exp_val
+
+
+def return_graph_vals():
+    return buy_and_hold_result[2]
 ###################################################################################
 # END FUNCTION BLOCK #
 ###################################################################################
@@ -482,6 +486,9 @@ plt.ylabel('some numbers')
 plt.show()
 
 
+#print('a', buy_and_hold_result[2])
+#print('b', buy_and_hold_result[0])
+#print('c', buy_and_hold_result[1])
 
 # returns your average compounding interest rate accross the
 # investment time period. Need to add each investment result
