@@ -26,15 +26,17 @@ class BackTestResults(APIView):
     
     # Create portfolio -- this will return the backtest results
     def post(self, request, format=None):
-        graphValues = PortfolioAnalyzerDriver.return_graph_vals()
+        resultTuple = PortfolioAnalyzerDriver.return_graph_vals()
         # PortfolioAnalyzerDriver.testFunc()
-        print(graphValues)
+        print(resultTuple[0])
+        print(resultTuple[1])
+        print(resultTuple[2])
         # asdf = TestModule.testFunc()
         serializer = StockSerializer(data=request.data)
         if serializer.is_valid():
             # stock = Stock.objects.create(serializer.data)
             # stock
-            # stock = serializer.validated_data
+            # stock = serializer.validated_datal,
             # stock.businessName += asdf
             # newSerializer = StockSerializer(stock)
             return Response(serializer.data)

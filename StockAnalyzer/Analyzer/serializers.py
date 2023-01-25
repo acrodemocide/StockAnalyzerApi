@@ -5,3 +5,7 @@ class StockSerializer(serializers.ModelSerializer):
   class Meta:
     model = Stock
     fields = ['id', 'businessName', 'ticker', 'price']
+
+class BackTestSerializer():
+    def test():
+        return 'hi'
