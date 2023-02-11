@@ -1,5 +1,5 @@
-from Analyzer.models import Stock
-from Analyzer.serializers import StockSerializer
+from Analyzer.models import Stock, Portfolio
+from Analyzer.serializers import StockSerializer, PortfolioSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -27,9 +27,13 @@ class BackTestResults(APIView):
     
     # Create portfolio -- this will return the backtest results
     def post(self, request, format=None):
-        resultTuple = PortfolioAnalyzerDriver.return_graph_vals()
-        serializer = StockSerializer(data=request.data)
-        if serializer.is_valid():
-            # return Response(serializer.data)
-            return Response(JSONRenderer().render(resultTuple))
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        stockSerializer = StockSerializer(data=request.data)
+
+        portfolioPriceHistory = PortfolioAnalyzerDriver.return_graph_vals()
+        portfolio = Portfolio()
+        portfolio.price_history = portfolioPriceHistory
+        portfolioSerializer = PortfolioSerializer(portfolio)
+        if stockSerializer.is_valid():
+            # return Response(JSONRenderer().render(portfolioPriceHistory))
+            return Response(portfolioSerializer.data)
+        return Response(stockSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
