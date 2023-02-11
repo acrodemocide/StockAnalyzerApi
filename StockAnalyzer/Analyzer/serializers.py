@@ -6,7 +6,7 @@ class StockSerializer(serializers.ModelSerializer):
     model = Stock
     fields = ['id', 'businessName', 'ticker', 'price']
 
-class PortfolioSerializer(serializers.Serializer):
+class PortfolioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Portfolio
         fields = ['price_history']
