@@ -2,7 +2,7 @@
 """Defines URL patterns for quickstart"""
 from django.conf.urls import url
 from django.urls import include, path
-from . import views
+from .views import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()

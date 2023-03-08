@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-from .quickstart import views
+from .quickstart.views import views
 
 router = routers.DefaultRouter()
 router.register(r'folios', views.PortfolioViewSet, basename='folios')

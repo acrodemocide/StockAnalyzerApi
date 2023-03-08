@@ -1,26 +1,12 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from .serializers.serializers import PortfolioInputSerializer, PortfolioSerializer
+from ..serializers.serializers import PortfolioInputSerializer, PortfolioSerializer
 from rest_framework.response import Response
-from .portfolio_analyzer import *
+from ..transferObjects.PortfolioResponse import Portfolio
+from ..portfolio_analyzer import *
 import time
 
 
 ###############################################################
-class Portfolio(object):
-    def __init__(self, id, name, buy_and_hold_final_value, tactical_rebalance_final_value, buy_and_hold_allocation, 
-                    tactical_rebalance_allocation, buy_and_hold_graph_data, tactical_rebalance_graph_data, 
-                    holdings):
-        self.id = id
-        self.name = name
-        self.buy_and_hold_final_value = buy_and_hold_final_value
-        self.tactical_rebalance_final_value = tactical_rebalance_final_value
-        self.buy_and_hold_allocation = buy_and_hold_allocation
-        self.tactical_rebalance_allocation = tactical_rebalance_allocation
-        self.buy_and_hold_graph_data = buy_and_hold_graph_data
-        self.tactical_rebalance_graph_data = tactical_rebalance_graph_data
-        self.holdings = holdings 
-
 Folios = [
     Portfolio(id=1, name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
               buy_and_hold_allocation=[200, 650, 100, 50], tactical_rebalance_allocation=[250, 250, 250, 250], 
