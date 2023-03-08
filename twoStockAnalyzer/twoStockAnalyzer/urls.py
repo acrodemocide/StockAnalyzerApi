@@ -16,25 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-#from ..stockAnalyzer1 import views
-#import sys
-#sys.path.append('C:\\Users\\chris\\twoStockAnalyzer\\quickstart\\')
-#from quickstart import views
-#from django.contrib import views
-from .quickstart import views #.twoStockAnalyzer.quickstart import views#twoStock.quickstart import views # import views
+from .quickstart import views
 
 router = routers.DefaultRouter()
 router.register(r'folios', views.PortfolioViewSet, basename='folios')
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
-#urlpatterns=router.url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    #path('test_view/', views.PortfolioView.as_view()),
-    #path('', include('quickstart.urls', namespace='quickstart')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    #url(r'^$', views.PortfolioViewSet, name='folios'),
 ]
 
