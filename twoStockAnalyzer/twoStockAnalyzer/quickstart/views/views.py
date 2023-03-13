@@ -7,7 +7,7 @@ import time
 
 
 ###############################################################
-Folios = [
+portfolios = [
     Portfolio(id=1, name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
               buy_and_hold_allocation=[200, 650, 100, 50], tactical_rebalance_allocation=[250, 250, 250, 250], 
               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']),
@@ -30,7 +30,7 @@ class PortfolioViewSet(viewsets.ViewSet):
     def create(self, request):
         #### test section ####
 
-        Folios = [
+        portfolios = [
             Portfolio(id=1, name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
                     buy_and_hold_allocation=[200, 650, 100, 50], tactical_rebalance_allocation=[250, 250, 250, 250], 
                     buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']),
@@ -119,10 +119,10 @@ class PortfolioViewSet(viewsets.ViewSet):
 
 
         # This is repeated... 
-        aggressive_allocation = Folios[0].buy_and_hold_allocation[:]#[200, 650, 100, 50]
-        moderate_allocation = Folios[1].buy_and_hold_allocation[:]#[250, 400, 200, 150]
-        conservative_allocation = Folios[2].buy_and_hold_allocation[:]#[200, 100, 700]
-        index_allocation = Folios[3].buy_and_hold_allocation[:]#[1000]
+        aggressive_allocation = portfolios[0].buy_and_hold_allocation[:]#[200, 650, 100, 50]
+        moderate_allocation = portfolios[1].buy_and_hold_allocation[:]#[250, 400, 200, 150]
+        conservative_allocation = portfolios[2].buy_and_hold_allocation[:]#[200, 100, 700]
+        index_allocation = portfolios[3].buy_and_hold_allocation[:]#[1000]
 
         
         ###############################################
@@ -154,15 +154,15 @@ class PortfolioViewSet(viewsets.ViewSet):
         # to the same memory location, I had to add a few extra things here..
         # need to pass in weightings for calculations so weightings stay the same
 
-        im_agg = Folios[0].tactical_rebalance_allocation[:]#[200, 650, 100, 50]
-        im_mod = Folios[1].tactical_rebalance_allocation[:]#[250, 400, 200, 150]
-        im_con = Folios[2].tactical_rebalance_allocation[:]#[200, 100, 700]
-        im_ind = Folios[3].tactical_rebalance_allocation[:]#[1000]
+        im_agg = portfolios[0].tactical_rebalance_allocation[:]#[200, 650, 100, 50]
+        im_mod = portfolios[1].tactical_rebalance_allocation[:]#[250, 400, 200, 150]
+        im_con = portfolios[2].tactical_rebalance_allocation[:]#[200, 100, 700]
+        im_ind = portfolios[3].tactical_rebalance_allocation[:]#[1000]
 
-        aggressive_allocation = Folios[0].tactical_rebalance_allocation[:]#[200, 650, 100, 50]
-        moderate_allocation = Folios[1].tactical_rebalance_allocation[:]#[250, 400, 200, 150]
-        conservative_allocation = Folios[2].tactical_rebalance_allocation[:]#[200, 100, 700]
-        index_allocation = Folios[3].tactical_rebalance_allocation[:]#[1000]
+        aggressive_allocation = portfolios[0].tactical_rebalance_allocation[:]#[200, 650, 100, 50]
+        moderate_allocation = portfolios[1].tactical_rebalance_allocation[:]#[250, 400, 200, 150]
+        conservative_allocation = portfolios[2].tactical_rebalance_allocation[:]#[200, 100, 700]
+        index_allocation = portfolios[3].tactical_rebalance_allocation[:]#[1000]
         im_port = data_test["tactical_rebalance_allocation"][:]#[250, 250, 250, 250]
         #im_port = []
         
@@ -182,18 +182,18 @@ class PortfolioViewSet(viewsets.ViewSet):
         #### 
         # Portfolio performance returns:
         ## standard portfolios for benchmarks ##
-        Folios[0].buy_and_hold_final_value = bhagg[0]
-        Folios[1].buy_and_hold_final_value = bhmod[0]
-        Folios[2].buy_and_hold_final_value = bhcon[0]
-        Folios[3].buy_and_hold_final_value = bhind[0]
-        Folios[0].buy_and_hold_allocation = bhagg[1]
-        Folios[1].buy_and_hold_allocation = bhmod[1]
-        Folios[2].buy_and_hold_allocation = bhcon[1]
-        Folios[3].buy_and_hold_allocation = bhind[1]
-        Folios[0].buy_and_hold_graph_data = bhagg[2]
-        Folios[1].buy_and_hold_graph_data = bhmod[2]
-        Folios[2].buy_and_hold_graph_data = bhcon[2]
-        Folios[3].buy_and_hold_graph_data = bhind[2]
+        portfolios[0].buy_and_hold_final_value = bhagg[0]
+        portfolios[1].buy_and_hold_final_value = bhmod[0]
+        portfolios[2].buy_and_hold_final_value = bhcon[0]
+        portfolios[3].buy_and_hold_final_value = bhind[0]
+        portfolios[0].buy_and_hold_allocation = bhagg[1]
+        portfolios[1].buy_and_hold_allocation = bhmod[1]
+        portfolios[2].buy_and_hold_allocation = bhcon[1]
+        portfolios[3].buy_and_hold_allocation = bhind[1]
+        portfolios[0].buy_and_hold_graph_data = bhagg[2]
+        portfolios[1].buy_and_hold_graph_data = bhmod[2]
+        portfolios[2].buy_and_hold_graph_data = bhcon[2]
+        portfolios[3].buy_and_hold_graph_data = bhind[2]
 
 
         ## custom Portfolio ##
@@ -210,12 +210,12 @@ class PortfolioViewSet(viewsets.ViewSet):
         print("---%s seconds ---" % (time.time()-start_time))
 
         ###############################################    
-        Folios.append(data_test)
-        serializer = PortfolioSerializer(instance=Folios, many=True)
+        portfolios.append(data_test)
+        serializer = PortfolioSerializer(instance=portfolios, many=True)
         return Response(serializer.data)
 
 
     def list(self, request):
         #serializer = PortfolioSerializer(instance=Folios.values(), many = True) 
-        serializer = PortfolioSerializer(instance=Folios, many = True) 
+        serializer = PortfolioSerializer(instance=portfolios, many = True) 
         return Response(serializer.data)
