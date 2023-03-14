@@ -6,6 +6,7 @@ from .portfolio_analyzer import *
 import time
 
 
+# TODO: dhoward -- remove following code after verifying we're not taking away from Chris's work
 ###############################################################
 # portfolios = [
 #     Portfolio(id=1, name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
@@ -215,6 +216,7 @@ class PortfolioViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
+    # TODO: dhoward -- remove following code after verifying we're not taking away from Chris's work
     # def list(self, request):
     #     serializer = PortfolioSerializer(instance=portfolios, many = True) 
     #     return Response(serializer.data)
