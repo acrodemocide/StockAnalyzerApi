@@ -7,20 +7,20 @@ import time
 
 
 ###############################################################
-portfolios = [
-    Portfolio(id=1, name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
-              buy_and_hold_allocation=[200, 650, 100, 50], tactical_rebalance_allocation=[250, 250, 250, 250], 
-              buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']),
-    Portfolio(id=2, name='moderate', buy_and_hold_final_value='18142', tactical_rebalance_final_value='5151', 
-              buy_and_hold_allocation=[250, 400, 200, 150], tactical_rebalance_allocation=[250, 250, 250, 250], 
-              buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ANWPX', 'AMECX', 'ABNDX', 'ABALX']),
-    Portfolio(id=3, name='conservative', buy_and_hold_final_value='11241', tactical_rebalance_final_value='4444', 
-              buy_and_hold_allocation=[200, 100, 700], tactical_rebalance_allocation=[250, 250, 250], 
-              buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ABALX', 'AMECX', 'ABNDX']),
-    Portfolio(id=4, name='index', buy_and_hold_final_value='68686', tactical_rebalance_final_value='5555', 
-              buy_and_hold_allocation=[1000], tactical_rebalance_allocation=[1000], 
-              buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['VTSMX'])
-]
+# portfolios = [
+#     Portfolio(id=1, name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
+#               buy_and_hold_allocation=[200, 650, 100, 50], tactical_rebalance_allocation=[250, 250, 250, 250], 
+#               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']),
+#     Portfolio(id=2, name='moderate', buy_and_hold_final_value='18142', tactical_rebalance_final_value='5151', 
+#               buy_and_hold_allocation=[250, 400, 200, 150], tactical_rebalance_allocation=[250, 250, 250, 250], 
+#               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ANWPX', 'AMECX', 'ABNDX', 'ABALX']),
+#     Portfolio(id=3, name='conservative', buy_and_hold_final_value='11241', tactical_rebalance_final_value='4444', 
+#               buy_and_hold_allocation=[200, 100, 700], tactical_rebalance_allocation=[250, 250, 250], 
+#               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ABALX', 'AMECX', 'ABNDX']),
+#     Portfolio(id=4, name='index', buy_and_hold_final_value='68686', tactical_rebalance_final_value='5555', 
+#               buy_and_hold_allocation=[1000], tactical_rebalance_allocation=[1000], 
+#               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['VTSMX'])
+# ]
 ##############################################################
 
 
@@ -45,10 +45,9 @@ class PortfolioViewSet(viewsets.ViewSet):
                     buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['VTSMX'])
         ]
 
-        # s_test = PortfolioSerializer(data=request.data)
-        s_test = PortfolioInputSerializer(data=request.data)
-        s_test.is_valid(raise_exception=True)
-        data_test = s_test.validated_data # This is the new custom portfolio object.
+        portfolio_serializer = PortfolioInputSerializer(data=request.data)
+        portfolio_serializer.is_valid(raise_exception=True)
+        user_portfolio = portfolio_serializer.validated_data
         ###############################################
         start_time = time.time()
         benchmarks_arr = ['AMRMX', 'ANWPX', 'AMECX', 'ABNDX', 
@@ -58,9 +57,9 @@ class PortfolioViewSet(viewsets.ViewSet):
         conservative_list = ['ABALX', 'AMECX', 'ABNDX']
         index_list = ['VTSMX']
 
-        user_input_arr = data_test["holdings"]
-        print('user_input_arr: ', user_input_arr)
-        full_list = benchmarks_arr + user_input_arr
+        user_stock_picks = user_portfolio["holdings"]
+        print('user_stock_picks: ', user_stock_picks)
+        full_list = benchmarks_arr + user_stock_picks
 
         threaded_list = []
         import concurrent.futures
@@ -71,10 +70,11 @@ class PortfolioViewSet(viewsets.ViewSet):
                     # if we create a database to minimize function calls.
                     threaded_list.append(r)
 
-        mock = Mock()
-        mock.side_effect = print 
-        print_original = print
-        builtins.print = mock
+        # TODO: dhoward -- removed following commented-out code
+        # mock = Mock()
+        # mock.side_effect = print 
+        # print_original = print
+        # builtins.print = mock
 
         try:
             str_io = io.StringIO()
@@ -111,7 +111,7 @@ class PortfolioViewSet(viewsets.ViewSet):
         #print('user_input_arr: ', user_input_arr)
         #print('return table type: ', type(return_table))
         #print('return_table keys: ', return_table.keys())
-        percent_table = make_return_percentages(period, user_input_arr, return_table)
+        percent_table = make_return_percentages(period, user_stock_picks, return_table)
         aggressive_percent = make_return_percentages(period, aggressive_list, aggressive_table)
         moderate_percent = make_return_percentages(period, moderate_list, moderate_table)
         conservative_percent = make_return_percentages(period, conservative_list, conservative_table)
@@ -129,11 +129,11 @@ class PortfolioViewSet(viewsets.ViewSet):
         #buy_and_hold_weightings = []
         #for i in range(0, len(user_input_arr)):
         #    buy_and_hold_weightings.append(250)
-        buy_and_hold_weightings = data_test["buy_and_hold_allocation"][:]
+        buy_and_hold_weightings = user_portfolio["buy_and_hold_allocation"][:]
         ###############################################
 
         # Creating Porfolio Objects
-        custom_portfolio = Investment_Portfolio(user_input_arr)
+        custom_portfolio = Investment_Portfolio(user_stock_picks)
         aggressive_portfolio = Investment_Portfolio(aggressive_list)
         moderate_portfolio = Investment_Portfolio(moderate_list)
         conservative_portfolio = Investment_Portfolio(conservative_list)
@@ -163,13 +163,13 @@ class PortfolioViewSet(viewsets.ViewSet):
         moderate_allocation = portfolios[1].tactical_rebalance_allocation[:]#[250, 400, 200, 150]
         conservative_allocation = portfolios[2].tactical_rebalance_allocation[:]#[200, 100, 700]
         index_allocation = portfolios[3].tactical_rebalance_allocation[:]#[1000]
-        im_port = data_test["tactical_rebalance_allocation"][:]#[250, 250, 250, 250]
+        im_port = user_portfolio["tactical_rebalance_allocation"][:]#[250, 250, 250, 250]
         #im_port = []
         
     
         #############################
-        tactical_rebal_weightings = data_test["tactical_rebalance_allocation"][:]
-        im_port = data_test["tactical_rebalance_allocation"][:]
+        tactical_rebal_weightings = user_portfolio["tactical_rebalance_allocation"][:]
+        im_port = user_portfolio["tactical_rebalance_allocation"][:]
         #############################
 
         tactical_rebal_result = custom_portfolio.tactical_rebalance(tactical_rebal_weightings, percent_table, im_port)
@@ -197,7 +197,7 @@ class PortfolioViewSet(viewsets.ViewSet):
 
 
         ## custom Portfolio ##
-        updated_data_test = data_test
+        updated_data_test = user_portfolio
         updated_data_test["name"] = "custom"
         updated_data_test["buy_and_hold_final_value"] = buy_and_hold_result[0]
         updated_data_test["tactical_rebalance_final_value"] = tactical_rebal_result[0]
@@ -205,17 +205,16 @@ class PortfolioViewSet(viewsets.ViewSet):
         updated_data_test["tactical_rebalance_allocation"] = tactical_rebal_result[1]
         updated_data_test["buy_and_hold_graph_data"] = buy_and_hold_result[2]
         updated_data_test["tactical_rebalance_graph_data"] = tactical_rebal_result[2]
-        updated_data_test["holdings"] = data_test["holdings"]
+        updated_data_test["holdings"] = user_portfolio["holdings"]
 
         print("---%s seconds ---" % (time.time()-start_time))
 
         ###############################################    
-        portfolios.append(data_test)
+        portfolios.append(user_portfolio)
         serializer = PortfolioSerializer(instance=portfolios, many=True)
         return Response(serializer.data)
 
 
-    def list(self, request):
-        #serializer = PortfolioSerializer(instance=Folios.values(), many = True) 
-        serializer = PortfolioSerializer(instance=portfolios, many = True) 
-        return Response(serializer.data)
+    # def list(self, request):
+    #     serializer = PortfolioSerializer(instance=portfolios, many = True) 
+    #     return Response(serializer.data)
