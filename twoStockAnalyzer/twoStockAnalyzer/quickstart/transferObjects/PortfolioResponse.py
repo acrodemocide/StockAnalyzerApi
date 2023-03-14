@@ -10,4 +10,4 @@ class Portfolio(object):
         self.tactical_rebalance_allocation = tactical_rebalance_allocation
         self.buy_and_hold_graph_data = buy_and_hold_graph_data
         self.tactical_rebalance_graph_data = tactical_rebalance_graph_data
-        self.holdings = holdings 
+        self.holdings = holdings
