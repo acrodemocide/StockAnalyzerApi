@@ -2,63 +2,47 @@ from rest_framework import viewsets
 from .serializers import PortfolioInputSerializer, PortfolioSerializer
 from rest_framework.response import Response
 from .transferObjects.PortfolioResponse import Portfolio
+from .transferObjects.portfolio_request import PortfolioRequest
 from .portfolio_analyzer import *
 import time
 
-
-# TODO: dhoward -- remove following code after verifying we're not taking away from Chris's work
-###############################################################
-# portfolios = [
-#     Portfolio(id=1, name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
-#               buy_and_hold_allocation=[200, 650, 100, 50], tactical_rebalance_allocation=[250, 250, 250, 250], 
-#               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']),
-#     Portfolio(id=2, name='moderate', buy_and_hold_final_value='18142', tactical_rebalance_final_value='5151', 
-#               buy_and_hold_allocation=[250, 400, 200, 150], tactical_rebalance_allocation=[250, 250, 250, 250], 
-#               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ANWPX', 'AMECX', 'ABNDX', 'ABALX']),
-#     Portfolio(id=3, name='conservative', buy_and_hold_final_value='11241', tactical_rebalance_final_value='4444', 
-#               buy_and_hold_allocation=[200, 100, 700], tactical_rebalance_allocation=[250, 250, 250], 
-#               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ABALX', 'AMECX', 'ABNDX']),
-#     Portfolio(id=4, name='index', buy_and_hold_final_value='68686', tactical_rebalance_final_value='5555', 
-#               buy_and_hold_allocation=[1000], tactical_rebalance_allocation=[1000], 
-#               buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['VTSMX'])
-# ]
-##############################################################
-
-
-## Create your views here.
 class PortfolioViewSet(viewsets.ViewSet):
 
     def create(self, request):
         #### test section ####
 
         portfolios = [
-            Portfolio(id=1, name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
+            Portfolio(name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
                     buy_and_hold_allocation=[200, 650, 100, 50], tactical_rebalance_allocation=[250, 250, 250, 250], 
                     buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']),
-            Portfolio(id=2, name='moderate', buy_and_hold_final_value='18142', tactical_rebalance_final_value='5151', 
+            Portfolio(name='moderate', buy_and_hold_final_value='18142', tactical_rebalance_final_value='5151', 
                     buy_and_hold_allocation=[250, 400, 200, 150], tactical_rebalance_allocation=[250, 250, 250, 250], 
                     buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ANWPX', 'AMECX', 'ABNDX', 'ABALX']),
-            Portfolio(id=3, name='conservative', buy_and_hold_final_value='11241', tactical_rebalance_final_value='4444', 
+            Portfolio(name='conservative', buy_and_hold_final_value='11241', tactical_rebalance_final_value='4444', 
                     buy_and_hold_allocation=[200, 100, 700], tactical_rebalance_allocation=[250, 250, 250], 
                     buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ABALX', 'AMECX', 'ABNDX']),
-            Portfolio(id=4, name='index', buy_and_hold_final_value='68686', tactical_rebalance_final_value='5555', 
+            Portfolio(name='index', buy_and_hold_final_value='68686', tactical_rebalance_final_value='5555', 
                     buy_and_hold_allocation=[1000], tactical_rebalance_allocation=[1000], 
                     buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['VTSMX'])
         ]
 
-        portfolio_serializer = PortfolioInputSerializer(data=request.data)
-        portfolio_serializer.is_valid(raise_exception=True)
-        user_portfolio = portfolio_serializer.validated_data
+        input_portfolio_serializer = PortfolioInputSerializer(data=request.data)
+        input_portfolio_serializer.is_valid(raise_exception=True)
+        asdf = input_portfolio_serializer.save()
+        user_portfolio = PortfolioRequest(asdf.holdings, asdf.buy_and_hold_allocation, asdf.tactical_rebalance_allocation)
+        
         ###############################################
         start_time = time.time()
-        benchmarks_arr = ['AMRMX', 'ANWPX', 'AMECX', 'ABNDX', 
-                'ABALX', 'AGTHX', 'VTSMX']
+        benchmarks_arr = ['AMRMX', 'ANWPX', 'AMECX', 'ABNDX', 'ABALX', 'AGTHX', 'VTSMX']
         aggressive_list = ['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']
         moderate_list = ['ANWPX', 'AMECX', 'ABNDX', 'ABALX']
         conservative_list = ['ABALX', 'AMECX', 'ABNDX']
         index_list = ['VTSMX']
 
-        user_stock_picks = user_portfolio["holdings"]
+        # TODO: dhoward -- check back on this
+        # user_stock_picks = user_portfolio["holdings"]
+        user_stock_picks = user_portfolio.holdings
+        # TODO: dhoward -- Do we need the following printout?
         print('user_stock_picks: ', user_stock_picks)
         full_list = benchmarks_arr + user_stock_picks
 
@@ -70,12 +54,6 @@ class PortfolioViewSet(viewsets.ViewSet):
                     # ^^ instead of 'full_list' can do 'user_input_arr'
                     # if we create a database to minimize function calls.
                     threaded_list.append(r)
-
-        # TODO: dhoward -- removed following commented-out code
-        # mock = Mock()
-        # mock.side_effect = print 
-        # print_original = print
-        # builtins.print = mock
 
         try:
             str_io = io.StringIO()
@@ -102,16 +80,9 @@ class PortfolioViewSet(viewsets.ViewSet):
         conservative_table = t1.iloc[:,[4,2,3]]
         index_table = t1.iloc[:,[6]]
         return_table = t1.iloc[:,7:]
-        #print('t1 titles: ', t1.columns)
-        #print('return table titles: ', return_table.keys())
 
 
         period = 20 #21 is roughly monthly, period 3 is roughly weekly
-        #print('period type: ', type(period))
-        #print('user_input_arr type: ', type(user_input_arr))
-        #print('user_input_arr: ', user_input_arr)
-        #print('return table type: ', type(return_table))
-        #print('return_table keys: ', return_table.keys())
         percent_table = make_return_percentages(period, user_stock_picks, return_table)
         aggressive_percent = make_return_percentages(period, aggressive_list, aggressive_table)
         moderate_percent = make_return_percentages(period, moderate_list, moderate_table)
@@ -120,17 +91,19 @@ class PortfolioViewSet(viewsets.ViewSet):
 
 
         # This is repeated... 
-        aggressive_allocation = portfolios[0].buy_and_hold_allocation[:]#[200, 650, 100, 50]
-        moderate_allocation = portfolios[1].buy_and_hold_allocation[:]#[250, 400, 200, 150]
-        conservative_allocation = portfolios[2].buy_and_hold_allocation[:]#[200, 100, 700]
-        index_allocation = portfolios[3].buy_and_hold_allocation[:]#[1000]
+        aggressive_allocation = portfolios[0].buy_and_hold_allocation[:]
+        moderate_allocation = portfolios[1].buy_and_hold_allocation[:]
+        conservative_allocation = portfolios[2].buy_and_hold_allocation[:]
+        index_allocation = portfolios[3].buy_and_hold_allocation[:]
 
         
         ###############################################
         #buy_and_hold_weightings = []
         #for i in range(0, len(user_input_arr)):
         #    buy_and_hold_weightings.append(250)
-        buy_and_hold_weightings = user_portfolio["buy_and_hold_allocation"][:]
+        # TODO: dhoward -- come back and check on this
+        # buy_and_hold_weightings = user_portfolio["buy_and_hold_allocation"][:]
+        buy_and_hold_weightings = user_portfolio.buy_and_hold_allocation[:]
         ###############################################
 
         # Creating Porfolio Objects
@@ -155,22 +128,22 @@ class PortfolioViewSet(viewsets.ViewSet):
         # to the same memory location, I had to add a few extra things here..
         # need to pass in weightings for calculations so weightings stay the same
 
-        im_agg = portfolios[0].tactical_rebalance_allocation[:]#[200, 650, 100, 50]
-        im_mod = portfolios[1].tactical_rebalance_allocation[:]#[250, 400, 200, 150]
-        im_con = portfolios[2].tactical_rebalance_allocation[:]#[200, 100, 700]
-        im_ind = portfolios[3].tactical_rebalance_allocation[:]#[1000]
+        im_agg = portfolios[0].tactical_rebalance_allocation[:]
+        im_mod = portfolios[1].tactical_rebalance_allocation[:]
+        im_con = portfolios[2].tactical_rebalance_allocation[:]
+        im_ind = portfolios[3].tactical_rebalance_allocation[:]
 
-        aggressive_allocation = portfolios[0].tactical_rebalance_allocation[:]#[200, 650, 100, 50]
-        moderate_allocation = portfolios[1].tactical_rebalance_allocation[:]#[250, 400, 200, 150]
-        conservative_allocation = portfolios[2].tactical_rebalance_allocation[:]#[200, 100, 700]
-        index_allocation = portfolios[3].tactical_rebalance_allocation[:]#[1000]
-        im_port = user_portfolio["tactical_rebalance_allocation"][:]#[250, 250, 250, 250]
-        #im_port = []
-        
+        aggressive_allocation = portfolios[0].tactical_rebalance_allocation[:]
+        moderate_allocation = portfolios[1].tactical_rebalance_allocation[:]
+        conservative_allocation = portfolios[2].tactical_rebalance_allocation[:]
+        index_allocation = portfolios[3].tactical_rebalance_allocation[:]
+        im_port = user_portfolio.tactical_rebalance_allocation[:]
     
         #############################
-        tactical_rebal_weightings = user_portfolio["tactical_rebalance_allocation"][:]
-        im_port = user_portfolio["tactical_rebalance_allocation"][:]
+        tactical_rebal_weightings = user_portfolio.tactical_rebalance_allocation[:]
+        # TODO: dhoward -- come back and check on this
+        # im_port = user_portfolio["tactical_rebalance_allocation"][:]
+        im_port = user_portfolio.tactical_rebalance_allocation[:]
         #############################
 
         tactical_rebal_result = custom_portfolio.tactical_rebalance(tactical_rebal_weightings, percent_table, im_port)
@@ -198,25 +171,33 @@ class PortfolioViewSet(viewsets.ViewSet):
 
 
         ## custom Portfolio ##
-        updated_data_test = user_portfolio
-        updated_data_test["name"] = "custom"
-        updated_data_test["buy_and_hold_final_value"] = buy_and_hold_result[0]
-        updated_data_test["tactical_rebalance_final_value"] = tactical_rebal_result[0]
-        updated_data_test["buy_and_hold_allocation"] = buy_and_hold_result[1]
-        updated_data_test["tactical_rebalance_allocation"] = tactical_rebal_result[1]
-        updated_data_test["buy_and_hold_graph_data"] = buy_and_hold_result[2]
-        updated_data_test["tactical_rebalance_graph_data"] = tactical_rebal_result[2]
-        updated_data_test["holdings"] = user_portfolio["holdings"]
+        # TODO: dhoward -- come back and check on these
+        # updated_data_test = user_portfolio
+        # updated_data_test["name"] = "custom"
+        # updated_data_test["buy_and_hold_final_value"] = buy_and_hold_result[0]
+        # updated_data_test["tactical_rebalance_final_value"] = tactical_rebal_result[0]
+        # updated_data_test["buy_and_hold_allocation"] = buy_and_hold_result[1]
+        # updated_data_test["tactical_rebalance_allocation"] = tactical_rebal_result[1]
+        # updated_data_test["buy_and_hold_graph_data"] = buy_and_hold_result[2]
+        # updated_data_test["tactical_rebalance_graph_data"] = tactical_rebal_result[2]
+        # updated_data_test["holdings"] = user_portfolio["holdings"]
+
+        updated_data_test = Portfolio(
+            name = 'custom',
+            buy_and_hold_final_value = buy_and_hold_result[0],
+            tactical_rebalance_final_value = tactical_rebal_result[0],
+            buy_and_hold_allocation = buy_and_hold_result[1],
+            tactical_rebalance_allocation = tactical_rebal_result[1],
+            buy_and_hold_graph_data = buy_and_hold_result[2],
+            tactical_rebalance_graph_data = tactical_rebal_result[2],
+            holdings = user_portfolio.holdings
+        )
 
         print("---%s seconds ---" % (time.time()-start_time))
 
-        ###############################################    
-        portfolios.append(user_portfolio)
+        ###############################################
+        # TODO: dhoward -- come back and check on this
+        # portfolios.append(user_portfolio)
+        portfolios.append(updated_data_test)
         serializer = PortfolioSerializer(instance=portfolios, many=True)
         return Response(serializer.data)
-
-
-    # TODO: dhoward -- remove following code after verifying we're not taking away from Chris's work
-    # def list(self, request):
-    #     serializer = PortfolioSerializer(instance=portfolios, many = True) 
-    #     return Response(serializer.data)

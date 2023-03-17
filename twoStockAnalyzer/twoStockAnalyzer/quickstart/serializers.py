@@ -1,5 +1,7 @@
-from django.contrib.auth.models import User, Group
-from .models import Portfolio
+# from django.contrib.auth.models import User, Group
+# from .models import Portfolio
+from .transferObjects.PortfolioResponse import Portfolio
+from .transferObjects.portfolio_request import PortfolioRequest
 from rest_framework import serializers
 
 
@@ -31,3 +33,11 @@ class PortfolioInputSerializer(serializers.Serializer):
     holdings = serializers.ListField(child=serializers.CharField(max_length=10))
     buy_and_hold_allocation = serializers.ListField(child=serializers.FloatField(min_value=0))
     tactical_rebalance_allocation = serializers.ListField(child=serializers.FloatField(min_value=0))
+
+    def create(self, validated_data):
+        return PortfolioRequest(**validated_data)
+
+    def update(self, instance, validated_data):
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        return instance
