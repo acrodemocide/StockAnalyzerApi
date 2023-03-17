@@ -39,8 +39,6 @@ class PortfolioViewSet(viewsets.ViewSet):
         conservative_list = ['ABALX', 'AMECX', 'ABNDX']
         index_list = ['VTSMX']
 
-        # TODO: dhoward -- check back on this
-        # user_stock_picks = user_portfolio["holdings"]
         user_stock_picks = user_portfolio.holdings
         # TODO: dhoward -- Do we need the following printout?
         print('user_stock_picks: ', user_stock_picks)
@@ -95,16 +93,7 @@ class PortfolioViewSet(viewsets.ViewSet):
         moderate_allocation = portfolios[1].buy_and_hold_allocation[:]
         conservative_allocation = portfolios[2].buy_and_hold_allocation[:]
         index_allocation = portfolios[3].buy_and_hold_allocation[:]
-
-        
-        ###############################################
-        #buy_and_hold_weightings = []
-        #for i in range(0, len(user_input_arr)):
-        #    buy_and_hold_weightings.append(250)
-        # TODO: dhoward -- come back and check on this
-        # buy_and_hold_weightings = user_portfolio["buy_and_hold_allocation"][:]
         buy_and_hold_weightings = user_portfolio.buy_and_hold_allocation[:]
-        ###############################################
 
         # Creating Porfolio Objects
         custom_portfolio = Investment_Portfolio(user_stock_picks)
@@ -141,8 +130,6 @@ class PortfolioViewSet(viewsets.ViewSet):
     
         #############################
         tactical_rebal_weightings = user_portfolio.tactical_rebalance_allocation[:]
-        # TODO: dhoward -- come back and check on this
-        # im_port = user_portfolio["tactical_rebalance_allocation"][:]
         im_port = user_portfolio.tactical_rebalance_allocation[:]
         #############################
 
@@ -171,17 +158,6 @@ class PortfolioViewSet(viewsets.ViewSet):
 
 
         ## custom Portfolio ##
-        # TODO: dhoward -- come back and check on these
-        # updated_data_test = user_portfolio
-        # updated_data_test["name"] = "custom"
-        # updated_data_test["buy_and_hold_final_value"] = buy_and_hold_result[0]
-        # updated_data_test["tactical_rebalance_final_value"] = tactical_rebal_result[0]
-        # updated_data_test["buy_and_hold_allocation"] = buy_and_hold_result[1]
-        # updated_data_test["tactical_rebalance_allocation"] = tactical_rebal_result[1]
-        # updated_data_test["buy_and_hold_graph_data"] = buy_and_hold_result[2]
-        # updated_data_test["tactical_rebalance_graph_data"] = tactical_rebal_result[2]
-        # updated_data_test["holdings"] = user_portfolio["holdings"]
-
         updated_data_test = Portfolio(
             name = 'custom',
             buy_and_hold_final_value = buy_and_hold_result[0],
@@ -196,8 +172,6 @@ class PortfolioViewSet(viewsets.ViewSet):
         print("---%s seconds ---" % (time.time()-start_time))
 
         ###############################################
-        # TODO: dhoward -- come back and check on this
-        # portfolios.append(user_portfolio)
         portfolios.append(updated_data_test)
         serializer = PortfolioSerializer(instance=portfolios, many=True)
         return Response(serializer.data)
