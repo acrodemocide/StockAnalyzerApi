@@ -117,10 +117,10 @@ class PortfolioViewSet(viewsets.ViewSet):
         # to the same memory location, I had to add a few extra things here..
         # need to pass in weightings for calculations so weightings stay the same
 
-        im_agg = portfolios[0].tactical_rebalance_allocation[:]
-        im_mod = portfolios[1].tactical_rebalance_allocation[:]
-        im_con = portfolios[2].tactical_rebalance_allocation[:]
-        im_ind = portfolios[3].tactical_rebalance_allocation[:]
+        # im_agg = portfolios[0].tactical_rebalance_allocation[:]
+        # im_mod = portfolios[1].tactical_rebalance_allocation[:]
+        # im_con = portfolios[2].tactical_rebalance_allocation[:]
+        # im_ind = portfolios[3].tactical_rebalance_allocation[:]
 
         aggressive_allocation = portfolios[0].tactical_rebalance_allocation[:]
         moderate_allocation = portfolios[1].tactical_rebalance_allocation[:]
@@ -134,10 +134,10 @@ class PortfolioViewSet(viewsets.ViewSet):
         #############################
 
         tactical_rebal_result = custom_portfolio.tactical_rebalance(tactical_rebal_weightings, percent_table, im_port)
-        tact_agg = aggressive_portfolio.tactical_rebalance(aggressive_allocation, aggressive_percent, im_agg)
-        tact_mod = moderate_portfolio.tactical_rebalance(moderate_allocation, moderate_percent, im_mod)
-        tact_con = conservative_portfolio.tactical_rebalance(conservative_allocation, conservative_percent, im_con)
-        tact_ind = index_portfolio.tactical_rebalance(index_allocation, index_percent, im_ind)
+        # tact_agg = aggressive_portfolio.tactical_rebalance(aggressive_allocation, aggressive_percent, im_agg)
+        # tact_mod = moderate_portfolio.tactical_rebalance(moderate_allocation, moderate_percent, im_mod)
+        # tact_con = conservative_portfolio.tactical_rebalance(conservative_allocation, conservative_percent, im_con)
+        # tact_ind = index_portfolio.tactical_rebalance(index_allocation, index_percent, im_ind)
 
         ############### --> end calculation <-- ################
         #### 
