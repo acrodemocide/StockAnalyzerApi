@@ -1,17 +1,24 @@
-###########################################################################
-# BEGIN FUNCTIONS BLOCK #
-###########################################################################
-
 import yfinance as yf
 import pandas as pd
-import numpy
 import time
-########
-import builtins
-import contextlib, io
-from unittest.mock import Mock
-########
 start_time = time.time()
+
+def backtest():
+    # portfolios = [
+    #     Portfolio(name='aggressive', buy_and_hold_final_value='23458', tactical_rebalance_final_value='6315', 
+    #             buy_and_hold_allocation=[200, 650, 100, 50], tactical_rebalance_allocation=[250, 250, 250, 250], 
+    #             buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['AMRMX', 'AGTHX', 'AMECX', 'ABNDX']),
+    #     Portfolio(name='moderate', buy_and_hold_final_value='18142', tactical_rebalance_final_value='5151', 
+    #             buy_and_hold_allocation=[250, 400, 200, 150], tactical_rebalance_allocation=[250, 250, 250, 250], 
+    #             buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ANWPX', 'AMECX', 'ABNDX', 'ABALX']),
+    #     Portfolio(name='conservative', buy_and_hold_final_value='11241', tactical_rebalance_final_value='4444', 
+    #             buy_and_hold_allocation=[200, 100, 700], tactical_rebalance_allocation=[250, 250, 250], 
+    #             buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['ABALX', 'AMECX', 'ABNDX']),
+    #     Portfolio(name='index', buy_and_hold_final_value='68686', tactical_rebalance_final_value='5555', 
+    #             buy_and_hold_allocation=[1000], tactical_rebalance_allocation=[1000], 
+    #             buy_and_hold_graph_data=[], tactical_rebalance_graph_data=[], holdings=['VTSMX'])
+    # ]
+    print('Not yet implemented')
 
 #def return_graph_vals(user_ticker_list):#, user_ticker_weightings):
 

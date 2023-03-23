@@ -5,6 +5,7 @@ from .transferObjects.PortfolioResponse import Portfolio
 from .transferObjects.portfolio_request import PortfolioRequest
 from .portfolio_analyzer import *
 import time
+import contextlib, io
 
 class PortfolioViewSet(viewsets.ViewSet):
 
