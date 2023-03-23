@@ -28,8 +28,8 @@ class PortfolioViewSet(viewsets.ViewSet):
 
         input_portfolio_serializer = PortfolioInputSerializer(data=request.data)
         input_portfolio_serializer.is_valid(raise_exception=True)
-        asdf = input_portfolio_serializer.save()
-        user_portfolio = PortfolioRequest(asdf.holdings, asdf.buy_and_hold_allocation, asdf.tactical_rebalance_allocation)
+        serialized_input_portfolio = input_portfolio_serializer.save()
+        user_portfolio = PortfolioRequest(serialized_input_portfolio.holdings, serialized_input_portfolio.buy_and_hold_allocation, serialized_input_portfolio.tactical_rebalance_allocation)
         
         ###############################################
         start_time = time.time()
