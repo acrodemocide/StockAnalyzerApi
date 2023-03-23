@@ -6,8 +6,6 @@ from rest_framework import serializers
 class InputSerializer(serializers.Serializer):
     input = serializers.CharField()
 
-
-################# TESTING CUSTOM SERIALIZER ######################
 class PortfolioSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=256)
     buy_and_hold_final_value = serializers.FloatField(max_value=None, min_value=0)
@@ -25,7 +23,6 @@ class PortfolioSerializer(serializers.Serializer):
         for field, value in validated_data.items():
             setattr(instance, field, value)
         return instance
-##################################################################
 
 class PortfolioInputSerializer(serializers.Serializer):
     holdings = serializers.ListField(child=serializers.CharField(max_length=10))
