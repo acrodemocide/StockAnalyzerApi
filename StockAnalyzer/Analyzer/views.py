@@ -24,15 +24,6 @@ class StockDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class BackTestResults(APIView):
     def post(self, request, format=None):
-        # stockSerializer = StockSerializer(data=request.data)
-
-        # portfolio = Portfolio()
-        # portfolio.price_history = PortfolioAnalyzerDriver.return_graph_vals()
-        # portfolioSerializer = PortfolioSerializer(portfolio)
-        
-        # if stockSerializer.is_valid():
-        #     return Response(portfolioSerializer.data)
-        # return Response(stockSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
         input_portfolio_serializer = PortfolioInputSerializer(data=request.data)
         input_portfolio_serializer.is_valid(raise_exception=True)
         serialized_input_portfolio = input_portfolio_serializer.save()
