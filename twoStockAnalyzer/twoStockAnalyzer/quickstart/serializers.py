@@ -1,5 +1,3 @@
-# from django.contrib.auth.models import User, Group
-# from .models import Portfolio
 from .transferObjects.PortfolioResponse import Portfolio
 from .transferObjects.portfolio_request import PortfolioRequest
 from rest_framework import serializers
