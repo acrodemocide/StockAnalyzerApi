@@ -1,9 +1,12 @@
-from Analyzer.models import Stock, Portfolio
+from Analyzer.models import Stock
 from Analyzer.serializers import StockSerializer, PortfolioSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from Analyzer.portfolio_analyzer import backtest
+from Analyzer.serializers import PortfolioInputSerializer, PortfolioSerializer
+from rest_framework.response import Response
+from Analyzer.transferObjects.portfolio_request import PortfolioRequest
 
 from importlib.machinery import SourceFileLoader
 PortfolioAnalyzerDriver = SourceFileLoader('PortfolioAnalyzerDriver', '../PortfolioAnalyzerDriver.py').load_module()
@@ -20,15 +23,15 @@ class StockDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StockSerializer
 
 class BackTestResults(APIView):
-    
-    # Create portfolio -- this will return the backtest results
     def post(self, request, format=None):
-        stockSerializer = StockSerializer(data=request.data)
+        input_portfolio_serializer = PortfolioInputSerializer(data=request.data)
+        input_portfolio_serializer.is_valid(raise_exception=True)
+        serialized_input_portfolio = input_portfolio_serializer.save()
+        user_portfolio = PortfolioRequest(
+            serialized_input_portfolio.holdings,
+            serialized_input_portfolio.buy_and_hold_allocation,
+            serialized_input_portfolio.tactical_rebalance_allocation)
 
-        portfolio = Portfolio()
-        portfolio.price_history = PortfolioAnalyzerDriver.return_graph_vals()
-        portfolioSerializer = PortfolioSerializer(portfolio)
-        
-        if stockSerializer.is_valid():
-            return Response(portfolioSerializer.data)
-        return Response(stockSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        portfolios = backtest(user_portfolio)
+        serializer = PortfolioSerializer(instance=portfolios, many=True)
+        return Response(serializer.data)
