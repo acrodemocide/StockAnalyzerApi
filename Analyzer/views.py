@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from Analyzer.transferObjects.portfolio_request import PortfolioRequest
 
 from importlib.machinery import SourceFileLoader
-PortfolioAnalyzerDriver = SourceFileLoader('PortfolioAnalyzerDriver', '../PortfolioAnalyzerDriver.py').load_module()
+PortfolioAnalyzerDriver = SourceFileLoader('PortfolioAnalyzerDriver', './PortfolioAnalyzerDriver.py').load_module()
 
 # Create your views here.
 class StockList(generics.ListCreateAPIView):
