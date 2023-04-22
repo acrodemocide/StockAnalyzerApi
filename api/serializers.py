@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Analyzer.models import Stock, Portfolio
+from api.models import Stock, Portfolio
 from .transferObjects.PortfolioResponse import Portfolio
 from .transferObjects.portfolio_request import PortfolioRequest
 
