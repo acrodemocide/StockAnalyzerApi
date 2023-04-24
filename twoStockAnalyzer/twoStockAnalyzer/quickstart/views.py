@@ -175,7 +175,6 @@ class PortfolioViewSet(viewsets.ViewSet):
         tact_ind = CustomPortfolio.tactical_rebalance(IndexBenchmarkPortfolio.tact_rebal_weightings, IndexBenchmarkPortfolio.returns_table, IndexBenchmarkPortfolio.immutable_weightings)
 
         ############### --> end calculation <-- ################
-        #### 
         # Portfolio performance returns:
         ## standard portfolios for benchmarks ##
         Folios[0].b_and_h_value = bhagg[0]
