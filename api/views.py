@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from api.portfolio_analyzer import backtest
 from api.serializers import PortfolioInputSerializer, PortfolioSerializer
 from rest_framework.response import Response
-from api.transferObjects.portfolio_request import PortfolioRequest
+from api.portfolio_request import PortfolioRequest
 
 from importlib.machinery import SourceFileLoader
 PortfolioAnalyzerDriver = SourceFileLoader('PortfolioAnalyzerDriver', './PortfolioAnalyzerDriver.py').load_module()
