@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from Analyzer.models import Stock, Portfolio
-from .transferObjects.PortfolioResponse import Portfolio
-from .transferObjects.portfolio_request import PortfolioRequest
+from api.models import Stock, Portfolio
+from .portfolio_response import Portfolio
+from .portfolio_request import PortfolioRequest
 
 class StockSerializer(serializers.ModelSerializer):
   class Meta:

@@ -1,7 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import time
-from .transferObjects.PortfolioResponse import Portfolio
+from .portfolio_response import Portfolio
 import time
 import contextlib, io
 

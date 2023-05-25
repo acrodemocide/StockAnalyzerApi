@@ -1,15 +1,15 @@
-from Analyzer.models import Stock
-from Analyzer.serializers import StockSerializer, PortfolioSerializer
+from api.models import Stock
+from api.serializers import StockSerializer, PortfolioSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from Analyzer.portfolio_analyzer import backtest
-from Analyzer.serializers import PortfolioInputSerializer, PortfolioSerializer
+from api.portfolio_analyzer import backtest
+from api.serializers import PortfolioInputSerializer, PortfolioSerializer
 from rest_framework.response import Response
-from Analyzer.transferObjects.portfolio_request import PortfolioRequest
+from api.portfolio_request import PortfolioRequest
 
 from importlib.machinery import SourceFileLoader
-PortfolioAnalyzerDriver = SourceFileLoader('PortfolioAnalyzerDriver', '../PortfolioAnalyzerDriver.py').load_module()
+PortfolioAnalyzerDriver = SourceFileLoader('PortfolioAnalyzerDriver', './PortfolioAnalyzerDriver.py').load_module()
 
 # Create your views here.
 class StockList(generics.ListCreateAPIView):
