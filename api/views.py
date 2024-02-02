@@ -3,7 +3,7 @@ from api.serializers import StockSerializer, PortfolioSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.portfolio_analyzer import backtest
+from services.portfolio_analyzer import backtest
 from api.serializers import PortfolioInputSerializer, PortfolioSerializer
 from rest_framework.response import Response
 from api.transfer_objs.portfolio_request import PortfolioRequest
