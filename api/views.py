@@ -3,7 +3,8 @@ from api.serializers import StockSerializer, PortfolioSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from services.portfolio_analyzer import backtest
+# from services.default_backtester import backtest
+from services.service_registration import algorithm_registry
 from api.serializers import PortfolioInputSerializer, PortfolioSerializer
 from rest_framework.response import Response
 from api.transfer_objs.portfolio_request import PortfolioRequest
@@ -31,7 +32,9 @@ class BackTestResults(APIView):
             serialized_input_portfolio.holdings,
             serialized_input_portfolio.buy_and_hold_allocation,
             serialized_input_portfolio.tactical_rebalance_allocation)
+        
+        portfolios = algorithm_registry["default"].backtest(user_portfolio)
 
-        portfolios = backtest(user_portfolio)
+        # portfolios = backtest(user_portfolio)
         serializer = PortfolioSerializer(instance=portfolios, many=True)
         return Response(serializer.data)
