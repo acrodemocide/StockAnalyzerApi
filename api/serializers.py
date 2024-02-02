@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from api.models import Stock, Portfolio
-from .portfolio_response import Portfolio
-from .portfolio_request import PortfolioRequest
+from api.transfer_objs.portfolio_response import Portfolio
+from api.transfer_objs.portfolio_request import PortfolioRequest
 
 class StockSerializer(serializers.ModelSerializer):
   class Meta:
