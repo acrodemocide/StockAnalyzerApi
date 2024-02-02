@@ -5,8 +5,8 @@ This API is used for gathering stock data and returning analyses on different as
 This API is written in Python, and so a virtual environment has been set up to isolate the packges installed for this project
 from the base Python system.
 
-To activate the virtual environment: venv\Scripts\activate
-  You should then see the prompt preceeded by the virtual environment name ((venv) $)
+To activate the virtual environment: env\Scripts\activate
+  You should then see the prompt preceeded by the virtual environment name ((env) $)
 To deactivate the virtual environment: deactivate
 
 To learn more about virtual environments, see https://realpython.com/python-virtual-environments-a-primer/
@@ -20,3 +20,6 @@ the requirements.txt file so that it is always up to date.
 To use: pip freeze > requirements.txt
 
 See https://pip.pypa.io/en/stable/cli/pip_freeze/ for the documentation
+
+# Running the server
+python manage.py runserver
