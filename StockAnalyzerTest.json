@@ -1,0 +1,7 @@
+{
+    "stocks": {
+        "asdf": 0.25,
+        "fdsa": 0.75
+    },
+    "strategy": "new_algorithm"
+}
