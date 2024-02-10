@@ -32,8 +32,7 @@ class BackTestResults(APIView):
             serialized_input_portfolio.strategy
             )
         
-        portfolio = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks)
-        serializer = PortfolioSerializer(data=portfolio)
+        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks)
+        serializer = PortfolioSerializer(data=value_snapshots)
         serializer.is_valid(raise_exception=True)
-        # return Response(serializer.data)
-        return Response(1)
+        return Response(serializer.data)
