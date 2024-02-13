@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from api.models import Stock, Portfolio
-from .portfolio_response import Portfolio
-from .portfolio_request import PortfolioRequest
+from api.transfer_objs.portfolio_response import Portfolio
+from api.transfer_objs.portfolio_request import PortfolioRequest
 
 class StockSerializer(serializers.ModelSerializer):
   class Meta:
@@ -17,14 +17,7 @@ class InputSerializer(serializers.Serializer):
     input = serializers.CharField()
 
 class PortfolioSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=256)
-    buy_and_hold_final_value = serializers.FloatField(max_value=None, min_value=0)
-    tactical_rebalance_final_value = serializers.FloatField(max_value=None, min_value=0)
-    buy_and_hold_allocation = serializers.ListField(child=serializers.FloatField(min_value=0))
-    tactical_rebalance_allocation = serializers.ListField(child=serializers.FloatField(min_value=0))
-    buy_and_hold_graph_data = serializers.ListField(child=serializers.FloatField(min_value=0))
-    tactical_rebalance_graph_data = serializers.ListField(child=serializers.FloatField(min_value=0))
-    holdings = serializers.ListField(child=serializers.CharField(max_length=10))
+    snapshots = serializers.DictField(child=serializers.FloatField(min_value=0))
 
     def create(self, validated_data):
         return Portfolio(**validated_data)
@@ -35,9 +28,8 @@ class PortfolioSerializer(serializers.Serializer):
         return instance
 
 class PortfolioInputSerializer(serializers.Serializer):
-    holdings = serializers.ListField(child=serializers.CharField(max_length=10))
-    buy_and_hold_allocation = serializers.ListField(child=serializers.FloatField(min_value=0))
-    tactical_rebalance_allocation = serializers.ListField(child=serializers.FloatField(min_value=0))
+    stocks = serializers.DictField(child=serializers.FloatField(min_value=0))
+    strategy = serializers.CharField(max_length=256)
 
     def create(self, validated_data):
         return PortfolioRequest(**validated_data)
