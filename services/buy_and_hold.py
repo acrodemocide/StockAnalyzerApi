@@ -34,55 +34,12 @@ class BuyAndHold(BackTesterInterface):
 
         user_data = web.DataReader(frontend_arr,start='1980-01-01')['Adj Close']
         cleaned_data = user_data.dropna()
-
-        def make_return_percentages(stock_table,rebal_period=21):
-            table = stock_table
-            print('table keys: ', table.keys()) 
-            # First argument '21' is going to need to be the period chosen by the user
-            # 21 is an approximately monthly time frame. Mostly used for rebalance,
-            # but also used to return monthly statements of portfolio value.
-            rebalance_dates = table.iloc[::rebal_period, :]
-            date_keys = rebalance_dates.index
-            print('rebalance_dates (inside func): ', rebalance_dates, 'len: ', len(rebalance_dates), 'len(date_keys): ', len(date_keys))
-            price_list = []
-            for i in stock_table.keys():#stocks_arr:
-                print('i: ', i, 'type: ', type(i))
-                # Each column in rebalance_dates is converted to a numpy array
-                # for more efficient calculations
-                price_list.append(rebalance_dates[i].to_numpy())
-            performance_table = []
-            return_list = []
-            for i in price_list:
-                flag = 0
-                date_list = []
-                for j in range(len(i)-1):
-                    if j == 0:
-                        pass
-                    else:
-                        try:
-                            res = i[j+1]/i[j]
-                            return_list.append(res)
-                            date_list.append(rebalance_dates.index[j].strftime('%Y-%m-%d')) #%X'))
-                        except:
-                            print('flag: ', flag)
-                            print('try except clause. except clause activated, break from loop')
-                            break
-                    flag += 1
-                print('len(return_list): ', len(return_list))
-                performance_table.append(return_list)
-                return_list = []
-                print('len(date_list): ', len(date_list))
-
-            return performance_table, date_keys
-
-
-            
         return_table = cleaned_data 
 
         #period = 21 #roughly a monthly rebalance schedule... This is something that won't come into
                     #play with a buy and hold initial iteration of the program.
 
-        return_percentages = make_return_percentages(return_table) #Each of these tables need to have another list for dates, or need to be dicts
+        return_percentages = self.__make_return_percentages(return_table) #Each of these tables need to have another list for dates, or need to be dicts
         percent_table = return_percentages[0]
         date_keys = return_percentages[1][1:-1]
         #print('percent_table: ', percent_table)
@@ -113,3 +70,43 @@ class BuyAndHold(BackTesterInterface):
             }
 
         return ret_val
+
+    def __make_return_percentages(self, stock_table,rebal_period=21):
+        table = stock_table
+        print('table keys: ', table.keys()) 
+        # First argument '21' is going to need to be the period chosen by the user
+        # 21 is an approximately monthly time frame. Mostly used for rebalance,
+        # but also used to return monthly statements of portfolio value.
+        rebalance_dates = table.iloc[::rebal_period, :]
+        date_keys = rebalance_dates.index
+        print('rebalance_dates (inside func): ', rebalance_dates, 'len: ', len(rebalance_dates), 'len(date_keys): ', len(date_keys))
+        price_list = []
+        for i in stock_table.keys():#stocks_arr:
+            print('i: ', i, 'type: ', type(i))
+            # Each column in rebalance_dates is converted to a numpy array
+            # for more efficient calculations
+            price_list.append(rebalance_dates[i].to_numpy())
+        performance_table = []
+        return_list = []
+        for i in price_list:
+            flag = 0
+            date_list = []
+            for j in range(len(i)-1):
+                if j == 0:
+                    pass
+                else:
+                    try:
+                        res = i[j+1]/i[j]
+                        return_list.append(res)
+                        date_list.append(rebalance_dates.index[j].strftime('%Y-%m-%d')) #%X'))
+                    except:
+                        print('flag: ', flag)
+                        print('try except clause. except clause activated, break from loop')
+                        break
+                flag += 1
+            print('len(return_list): ', len(return_list))
+            performance_table.append(return_list)
+            return_list = []
+            print('len(date_list): ', len(date_list))
+
+        return performance_table, date_keys
