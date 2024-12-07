@@ -29,7 +29,8 @@ class Investment_Portfolio:
 class BuyAndHold(BackTesterInterface):
     def backtest(self, stocks: Dict[str, float]) -> Dict[datetime, float]:
 
-        frontend_arr = ['AAPL','CLSK']
+        # frontend_arr = ['AAPL','CLSK']
+        frontend_arr = list(stocks)
 
         user_data = web.DataReader(frontend_arr,start='1980-01-01')['Adj Close']
         cleaned_data = user_data.dropna()
