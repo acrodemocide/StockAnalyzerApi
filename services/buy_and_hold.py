@@ -29,6 +29,7 @@ class Investment_Portfolio:
 class BuyAndHold(BackTesterInterface):
     def backtest(self, stocks: Dict[str, float]) -> Dict[datetime, float]:
 
+        # The following was hard-coded, and I'm keeping it here for reference
         # frontend_arr = ['AAPL','CLSK']
         frontend_arr = list(stocks)
 
