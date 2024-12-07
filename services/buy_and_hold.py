@@ -47,8 +47,13 @@ class BuyAndHold(BackTesterInterface):
         #print('date_keys: ', date_keys)
 
         custom_portfolio_weightings = []
-        for i in range(0, len(frontend_arr)):
-            custom_portfolio_weightings.append(1000/len(frontend_arr)) 
+        for weight in stocks:
+            custom_portfolio_weightings.append(1000 * stocks[weight])
+
+        # DHOWARD - I am keeping this commented-code for reference since the original algorithm was
+            # written to just givve equal weight to all stocks in the portfolio.
+        # for i in range(0, len(frontend_arr)):
+        #     custom_portfolio_weightings.append(1000/len(frontend_arr))
             #"""This is where I put the input dictionary values... 
             #This is part of the cleaning process, so this works fine here."""
 
