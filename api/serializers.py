@@ -16,7 +16,7 @@ class PortfolioSerializer(serializers.ModelSerializer):
 class InputSerializer(serializers.Serializer):
     input = serializers.CharField()
 
-class PortfolioSerializer(serializers.Serializer):
+class OutputPortfolioSerializer(serializers.Serializer):
     snapshots = serializers.DictField(child=serializers.FloatField(min_value=0))
 
     def create(self, validated_data):
