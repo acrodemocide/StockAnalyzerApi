@@ -1,3 +1,4 @@
+from typing import Dict
 import yfinance as yf
 import pandas as pd
 import time
@@ -9,7 +10,7 @@ from services.back_tester_interface import BackTesterInterface
 class DefaultBackTester(BackTesterInterface):
     start_time = time.time()
 
-    def backtest(self, user_portfolio):
+    def backtest(self, user_portfolio: Dict[str, float], initial_value: float):
         portfolios = self.__generate_portfolios()
 
         ###############################################

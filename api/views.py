@@ -1,5 +1,5 @@
 from api.models import Stock
-from api.serializers import StockSerializer#, PortfolioSerializer
+from api.serializers import StockSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,9 +7,6 @@ from services.service_registration import algorithm_registry
 from api.serializers import PortfolioInputSerializer, OutputPortfolioSerializer
 from rest_framework.response import Response
 from api.transfer_objs.portfolio_request import PortfolioRequest
-
-# from importlib.machinery import SourceFileLoader
-# PortfolioAnalyzerDriver = SourceFileLoader('PortfolioAnalyzerDriver', './PortfolioAnalyzerDriver.py').load_module()
 
 # Create your views here.
 class StockList(generics.ListCreateAPIView):
@@ -29,14 +26,11 @@ class BackTestResults(APIView):
         serialized_input_portfolio = input_portfolio_serializer.save()
         user_portfolio = PortfolioRequest(
             serialized_input_portfolio.stocks,
-            serialized_input_portfolio.strategy
+            serialized_input_portfolio.strategy,
+            serialized_input_portfolio.initial_value
             )
         
-        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks)
+        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks, user_portfolio.initial_value)
         serializer = OutputPortfolioSerializer(data=value_snapshots)
-        print('serializer:')
-        print(serializer)
-        print(serializer.is_valid())
-        print(serializer.errors)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data)

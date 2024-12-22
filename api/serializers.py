@@ -30,6 +30,7 @@ class OutputPortfolioSerializer(serializers.Serializer):
 class PortfolioInputSerializer(serializers.Serializer):
     stocks = serializers.DictField(child=serializers.FloatField(min_value=0))
     strategy = serializers.CharField(max_length=256)
+    initial_value = serializers.FloatField(min_value=0)
 
     def create(self, validated_data):
         return PortfolioRequest(**validated_data)

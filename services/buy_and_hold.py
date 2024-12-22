@@ -27,7 +27,7 @@ class Investment_Portfolio:
         return end_val, buy_and_hold_portfolio, statement
 
 class BuyAndHold(BackTesterInterface):
-    def backtest(self, stocks: Dict[str, float]) -> Dict[datetime, float]:
+    def backtest(self, stocks: Dict[str, float], initial_value: float) -> Dict[datetime, float]:
 
         # The following was hard-coded, and I'm keeping it here for reference
         # frontend_arr = ['AAPL','CLSK']
@@ -48,7 +48,8 @@ class BuyAndHold(BackTesterInterface):
 
         custom_portfolio_weightings = []
         for weight in stocks:
-            custom_portfolio_weightings.append(1000 * stocks[weight])
+            # custom_portfolio_weightings.append(1000 * stocks[weight])
+            custom_portfolio_weightings.append(initial_value * stocks[weight])
 
         # DHOWARD - I am keeping this commented-code for reference since the original algorithm was
             # written to just givve equal weight to all stocks in the portfolio.
