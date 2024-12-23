@@ -29,16 +29,9 @@ class Investment_Portfolio:
 class BuyAndHold(BackTesterInterface):
     def backtest(self, stocks: Dict[str, float], initial_value: float, start_date: datetime, end_date: datetime) -> Dict[datetime, float]:
 
-        # The following was hard-coded, and I'm keeping it here for reference
-        # frontend_arr = ['AAPL','CLSK']
         frontend_arr = list(stocks)
 
-        # TODO: dhoward -- update these to use passed in args, but setting these here to test
-        #   converstion of datetime to string
-        # start_date = datetime(1980, 1, 1).strftime('%Y-%m-%d')
-        # end_date = datetime(2024, 12, 12).strftime('%Y-%m-%d')
         user_data = web.DataReader(frontend_arr, start = start_date.strftime('%Y-%m-%d'), end = end_date.strftime('%Y-%m-%d'))['Adj Close']
-        # user_data = web.DataReader(frontend_arr,start='1980-01-01', end='2024-12-12')['Adj Close']
         cleaned_data = user_data.dropna()
         return_table = cleaned_data 
 
