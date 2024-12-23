@@ -27,10 +27,12 @@ class BackTestResults(APIView):
         user_portfolio = PortfolioRequest(
             serialized_input_portfolio.stocks,
             serialized_input_portfolio.strategy,
-            serialized_input_portfolio.initial_value
+            serialized_input_portfolio.initial_value,
+            serialized_input_portfolio.start_date,
+            serialized_input_portfolio.end_date
             )
         
-        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks, user_portfolio.initial_value)
+        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)
         serializer = OutputPortfolioSerializer(data=value_snapshots)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data)
