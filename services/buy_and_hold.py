@@ -37,35 +37,17 @@ class BuyAndHold(BackTesterInterface):
 
         #period = 21 #roughly a monthly rebalance schedule... This is something that won't come into
                     #play with a buy and hold initial iteration of the program.
-
         return_percentages = self.__make_return_percentages(return_table) #Each of these tables need to have another list for dates, or need to be dicts
         percent_table = return_percentages[0]
         date_keys = return_percentages[1][1:-1]
-        #print('percent_table: ', percent_table)
-        #print('date_keys: ', date_keys)
 
         custom_portfolio_weightings = []
         for weight in stocks:
-            # custom_portfolio_weightings.append(1000 * stocks[weight])
             custom_portfolio_weightings.append(initial_value * stocks[weight])
-
-        # DHOWARD - I am keeping this commented-code for reference since the original algorithm was
-            # written to just givve equal weight to all stocks in the portfolio.
-        # for i in range(0, len(frontend_arr)):
-        #     custom_portfolio_weightings.append(1000/len(frontend_arr))
-            #"""This is where I put the input dictionary values... 
-            #This is part of the cleaning process, so this works fine here."""
 
         # Creating Portfolio Objects
         custom_portfolio = Investment_Portfolio(frontend_arr)
-
         buy_and_hold_custom = custom_portfolio.buy_and_hold(custom_portfolio_weightings, percent_table)
-
-        #print('len(buy_and_hold_custom[2]: ', len(buy_and_hold_custom[2]))
-        #print('buy_and_hold_custom[2]: ', buy_and_hold_custom[2])
-        #print('date_keys: ', date_keys)
-        #print('len(date_keys): ', len(date_keys))
-        #"""return dictionary with datetimes and 'snapshots'"""
         return_dict = { }
         if (len(date_keys) > 0):
             return_dict = {date_keys[i].to_pydatetime(): buy_and_hold_custom[2][i] for i in range(len(date_keys))}
