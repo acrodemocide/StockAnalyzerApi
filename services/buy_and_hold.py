@@ -27,47 +27,27 @@ class Investment_Portfolio:
         return end_val, buy_and_hold_portfolio, statement
 
 class BuyAndHold(BackTesterInterface):
-    def backtest(self, stocks: Dict[str, float], initial_value: float) -> Dict[datetime, float]:
+    def backtest(self, stocks: Dict[str, float], initial_value: float, start_date: datetime, end_date: datetime) -> Dict[datetime, float]:
 
-        # The following was hard-coded, and I'm keeping it here for reference
-        # frontend_arr = ['AAPL','CLSK']
         frontend_arr = list(stocks)
 
-        user_data = web.DataReader(frontend_arr,start='1980-01-01')['Adj Close']
+        user_data = web.DataReader(frontend_arr, start = start_date.strftime('%Y-%m-%d'), end = end_date.strftime('%Y-%m-%d'))['Adj Close']
         cleaned_data = user_data.dropna()
         return_table = cleaned_data 
 
         #period = 21 #roughly a monthly rebalance schedule... This is something that won't come into
                     #play with a buy and hold initial iteration of the program.
-
         return_percentages = self.__make_return_percentages(return_table) #Each of these tables need to have another list for dates, or need to be dicts
         percent_table = return_percentages[0]
         date_keys = return_percentages[1][1:-1]
-        #print('percent_table: ', percent_table)
-        #print('date_keys: ', date_keys)
 
         custom_portfolio_weightings = []
         for weight in stocks:
-            # custom_portfolio_weightings.append(1000 * stocks[weight])
             custom_portfolio_weightings.append(initial_value * stocks[weight])
-
-        # DHOWARD - I am keeping this commented-code for reference since the original algorithm was
-            # written to just givve equal weight to all stocks in the portfolio.
-        # for i in range(0, len(frontend_arr)):
-        #     custom_portfolio_weightings.append(1000/len(frontend_arr))
-            #"""This is where I put the input dictionary values... 
-            #This is part of the cleaning process, so this works fine here."""
 
         # Creating Portfolio Objects
         custom_portfolio = Investment_Portfolio(frontend_arr)
-
         buy_and_hold_custom = custom_portfolio.buy_and_hold(custom_portfolio_weightings, percent_table)
-
-        #print('len(buy_and_hold_custom[2]: ', len(buy_and_hold_custom[2]))
-        #print('buy_and_hold_custom[2]: ', buy_and_hold_custom[2])
-        #print('date_keys: ', date_keys)
-        #print('len(date_keys): ', len(date_keys))
-        #"""return dictionary with datetimes and 'snapshots'"""
         return_dict = { }
         if (len(date_keys) > 0):
             return_dict = {date_keys[i].to_pydatetime(): buy_and_hold_custom[2][i] for i in range(len(date_keys))}

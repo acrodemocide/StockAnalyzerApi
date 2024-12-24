@@ -10,7 +10,7 @@ from services.back_tester_interface import BackTesterInterface
 class DefaultBackTester(BackTesterInterface):
     start_time = time.time()
 
-    def backtest(self, user_portfolio: Dict[str, float], initial_value: float):
+    def backtest(self, user_portfolio: Dict[str, float], initial_value: float, start_date: str, end_date: str) -> Portfolio:
         portfolios = self.__generate_portfolios()
 
         ###############################################

@@ -4,13 +4,11 @@ from services.back_tester_interface import BackTesterInterface
 
 # TODO: dhoward this is a dummy algorithm for testing purposes
 class MyNewAlgorithm(BackTesterInterface):
-    def backtest(self, stocks: Dict[str, float], initial_value: float) -> Dict[datetime, float]:
+    def backtest(self, stocks: Dict[str, float], initial_value: float, start_date: datetime, end_date: datetime) -> Dict[datetime, float]:
         print("My new algorithm is backtesting the following stocks:")
         for stock, price in stocks.items():
             print(f"{stock}: {price}")
 
-        # TODO: dhoward -- come up with a better representation for this data
-            # getting returned
         return {
             'snapshots': {
                 datetime.now(): initial_value + 100.0,
