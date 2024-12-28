@@ -1,8 +1,10 @@
+import typing
 from api.models import Stock
 from api.serializers import StockSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from api.transfer_objs.portfolio_response import Portfolio
 from services.service_registration import algorithm_registry
 from api.serializers import PortfolioInputSerializer, OutputPortfolioSerializer
 from rest_framework.response import Response
@@ -29,10 +31,14 @@ class BackTestResults(APIView):
             serialized_input_portfolio.strategy,
             serialized_input_portfolio.initial_value,
             serialized_input_portfolio.start_date,
-            serialized_input_portfolio.end_date
+            serialized_input_portfolio.end_date,
+            serialized_input_portfolio.benchmark_ticker
             )
         
         value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)
-        serializer = OutputPortfolioSerializer(data=value_snapshots)
+        # benchmark = algorithm_registry["buy_and_hold"].backtest(user_portfolio.benchmark_ticker, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)
+        response = Portfolio(value_snapshots, {})
+        # response = Portfolio(value_snapshots, benchmark)
+        serializer = OutputPortfolioSerializer(data=response)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data)

@@ -18,6 +18,7 @@ class InputSerializer(serializers.Serializer):
 
 class OutputPortfolioSerializer(serializers.Serializer):
     snapshots = serializers.DictField(child=serializers.FloatField(min_value=0))
+    benchmark = serializers.DictField(child=serializers.FloatField(min_value=0))
 
     def create(self, validated_data):
         return Portfolio(**validated_data)
@@ -33,6 +34,7 @@ class PortfolioInputSerializer(serializers.Serializer):
     initial_value = serializers.FloatField(min_value=0)
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
+    benchmark_ticker = serializers.DictField(child=serializers.FloatField(min_value=0))
 
     def create(self, validated_data):
         return PortfolioRequest(**validated_data)
