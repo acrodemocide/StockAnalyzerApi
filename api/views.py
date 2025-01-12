@@ -35,10 +35,8 @@ class BackTestResults(APIView):
             serialized_input_portfolio.benchmark_ticker
             )
         
-        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)
-        # benchmark = algorithm_registry["buy_and_hold"].backtest(user_portfolio.benchmark_ticker, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)
-        response = Portfolio(value_snapshots, {})
-        # response = Portfolio(value_snapshots, benchmark)
-        serializer = OutputPortfolioSerializer(data=response)
-        serializer.is_valid(raise_exception=True)
+        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)['snapshots']
+        benchmark_snapshots = algorithm_registry[user_portfolio.strategy].backtest({user_portfolio.benchmark_ticker: 1.0}, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)['snapshots']
+        output_portfolio = Portfolio(value_snapshots, benchmark_snapshots)
+        serializer = OutputPortfolioSerializer(output_portfolio)
         return Response(serializer.data)
