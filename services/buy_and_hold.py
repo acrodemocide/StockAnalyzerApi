@@ -33,7 +33,8 @@ class BuyAndHold(BackTesterInterface):
         frontend_arr = list(stocks)
 
         user_data = web.DataReader(frontend_arr, start = start_date.strftime('%Y-%m-%d'), end = end_date.strftime('%Y-%m-%d'))['Adj Close']
-        print ('user_data: ', user_data)
+        #convert user_data to a pandas dataframe
+        user_data = pd.DataFrame(user_data)
         cleaned_data = user_data.dropna()
         print('cleaned_data: ', cleaned_data)
         return_table = cleaned_data 
