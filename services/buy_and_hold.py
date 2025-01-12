@@ -1,5 +1,6 @@
 from typing import Dict
 from datetime import datetime, timedelta
+from api.transfer_objs.portfolio_response import Portfolio
 from services.back_tester_interface import BackTesterInterface
 import ffn
 import numpy
@@ -28,14 +29,12 @@ class Investment_Portfolio:
 
 class BuyAndHold(BackTesterInterface):
     def backtest(self, stocks: Dict[str, float], initial_value: float, start_date: datetime, end_date: datetime) -> Dict[datetime, float]:
-
         frontend_arr = list(stocks)
 
         user_data = web.DataReader(frontend_arr, start = start_date.strftime('%Y-%m-%d'), end = end_date.strftime('%Y-%m-%d'))['Adj Close']
-        #convert user_data to a pandas dataframe
         user_data = pd.DataFrame(user_data)
         cleaned_data = user_data.dropna()
-        return_table = cleaned_data 
+        return_table = cleaned_data
 
         #period = 21 #roughly a monthly rebalance schedule... This is something that won't come into
                     #play with a buy and hold initial iteration of the program.
@@ -50,15 +49,12 @@ class BuyAndHold(BackTesterInterface):
         # Creating Portfolio Objects
         custom_portfolio = Investment_Portfolio(frontend_arr)
         buy_and_hold_custom = custom_portfolio.buy_and_hold(custom_portfolio_weightings, percent_table)
+
         return_dict = { }
         if (len(date_keys) > 0):
             return_dict = {date_keys[i].to_pydatetime(): buy_and_hold_custom[2][i] for i in range(len(date_keys))}
         
-        ret_val = {
-            'snapshots': return_dict
-            }
-
-        return ret_val
+        return return_dict
 
     def __make_return_percentages(self, stock_table,rebal_period=21):
         table = stock_table

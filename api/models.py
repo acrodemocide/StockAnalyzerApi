@@ -10,4 +10,4 @@ class Stock(models.Model):
 
 class Portfolio(models.Model):
     price_history = ArrayField(models.DecimalField(max_digits=10, decimal_places=2))
-    
+    benchmark = ArrayField(models.DecimalField(max_digits=10, decimal_places=2))
