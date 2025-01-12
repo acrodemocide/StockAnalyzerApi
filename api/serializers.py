@@ -2,6 +2,7 @@ from rest_framework import serializers
 from api.models import Stock, Portfolio
 from api.transfer_objs.portfolio_response import Portfolio
 from api.transfer_objs.portfolio_request import PortfolioRequest
+from rest_framework import serializers
 
 class StockSerializer(serializers.ModelSerializer):
   class Meta:
@@ -15,8 +16,6 @@ class PortfolioSerializer(serializers.ModelSerializer):
 
 class InputSerializer(serializers.Serializer):
     input = serializers.CharField()
-
-from rest_framework import serializers
 
 class OutputPortfolioSerializer(serializers.Serializer):
     snapshots = serializers.DictField(
