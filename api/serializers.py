@@ -43,7 +43,7 @@ class PortfolioInputSerializer(serializers.Serializer):
     initial_value = serializers.FloatField(min_value=0)
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
-    benchmark_ticker = serializers.CharField(max_length=256)
+    benchmark_ticker = serializers.CharField(max_length=256, allow_blank=True)
 
     def create(self, validated_data):
         return PortfolioRequest(**validated_data)
