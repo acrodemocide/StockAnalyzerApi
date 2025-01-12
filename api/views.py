@@ -35,8 +35,8 @@ class BackTestResults(APIView):
             serialized_input_portfolio.benchmark_ticker
             )
         
-        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)['snapshots']
-        benchmark_snapshots = {} if user_portfolio.benchmark_ticker == '' else algorithm_registry[user_portfolio.strategy].backtest({user_portfolio.benchmark_ticker: 1.0}, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)['snapshots']
+        value_snapshots = algorithm_registry[user_portfolio.strategy].backtest(user_portfolio.stocks, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)
+        benchmark_snapshots = {} if user_portfolio.benchmark_ticker == '' else algorithm_registry[user_portfolio.strategy].backtest({user_portfolio.benchmark_ticker: 1.0}, user_portfolio.initial_value, user_portfolio.start_date, user_portfolio.end_date)
         output_portfolio = Portfolio(value_snapshots, benchmark_snapshots)
         serializer = OutputPortfolioSerializer(output_portfolio)
         return Response(serializer.data)

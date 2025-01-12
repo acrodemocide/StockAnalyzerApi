@@ -1,5 +1,6 @@
 from typing import Dict
 from datetime import datetime, timedelta
+from api.transfer_objs.portfolio_response import Portfolio
 from services.back_tester_interface import BackTesterInterface
 import ffn
 import numpy
@@ -55,11 +56,7 @@ class BuyAndHold(BackTesterInterface):
         if (len(date_keys) > 0):
             return_dict = {date_keys[i].to_pydatetime(): buy_and_hold_custom[2][i] for i in range(len(date_keys))}
         
-        ret_val = {
-            'snapshots': return_dict
-            }
-
-        return ret_val
+        return return_dict
 
     def __make_return_percentages(self, stock_table,rebal_period=21):
         table = stock_table
