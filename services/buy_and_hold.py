@@ -1,14 +1,7 @@
 from typing import Dict
-from datetime import datetime, timedelta
-from api.transfer_objs.portfolio_response import Portfolio
+from datetime import datetime
 from repositories.stock_data import Stock_Data
 from services.back_tester_interface import BackTesterInterface
-import ffn
-import numpy
-import pandas as pd
-import pandas_datareader.data as web
-import yfinance as yf
-# yf.pdr_override()
 
 class Investment_Portfolio:
     def __init__(self, portfolio):
@@ -32,7 +25,6 @@ class BuyAndHold(BackTesterInterface):
     def backtest(self, stocks: Dict[str, float], initial_value: float, start_date: datetime, end_date: datetime) -> Dict[datetime, float]:
         stock_tickers = list(stocks)
         stock_price_history = Stock_Data.get_stock_data(stock_tickers, start_date, end_date)
-        print('stock_price_history: ', stock_price_history)
 
         #period = 21 #roughly a monthly rebalance schedule... This is something that won't come into
                     #play with a buy and hold initial iteration of the program.
