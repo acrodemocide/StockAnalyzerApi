@@ -33,11 +33,10 @@ class BuyAndHold(BackTesterInterface):
         stock_tickers = list(stocks)
         stock_price_history = Stock_Data.get_stock_data(stock_tickers, start_date, end_date)
         print('stock_price_history: ', stock_price_history)
-        return_table = stock_price_history
 
         #period = 21 #roughly a monthly rebalance schedule... This is something that won't come into
                     #play with a buy and hold initial iteration of the program.
-        return_percentages = self.__make_return_percentages(return_table) #Each of these tables need to have another list for dates, or need to be dicts
+        return_percentages = self.__make_return_percentages(stock_price_history) #Each of these tables need to have another list for dates, or need to be dicts
         percent_table = return_percentages[0]
         date_keys = return_percentages[1][1:-1]
 
