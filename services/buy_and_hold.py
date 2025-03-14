@@ -1,13 +1,14 @@
 from typing import Dict
 from datetime import datetime, timedelta
 from api.transfer_objs.portfolio_response import Portfolio
+from repositories.stock_data import Stock_Data
 from services.back_tester_interface import BackTesterInterface
 import ffn
 import numpy
 import pandas as pd
 import pandas_datareader.data as web
 import yfinance as yf
-yf.pdr_override()
+# yf.pdr_override()
 
 class Investment_Portfolio:
     def __init__(self, portfolio):
@@ -29,13 +30,10 @@ class Investment_Portfolio:
 
 class BuyAndHold(BackTesterInterface):
     def backtest(self, stocks: Dict[str, float], initial_value: float, start_date: datetime, end_date: datetime) -> Dict[datetime, float]:
-        frontend_arr = list(stocks)
-
-        # user_data = web.DataReader(frontend_arr, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))['Adj Close']
-        user_data = yf.download(frontend_arr, start=start_date.strftime('%Y-%m-%d'), end=end_date.strftime('%Y-%m-%d'))['Adj Close']
-        # user_data = pd.DataFrame(user_data)
-        cleaned_data = user_data.dropna()
-        return_table = cleaned_data
+        stock_tickers = list(stocks)
+        stock_price_history = Stock_Data.get_stock_data(stock_tickers, start_date, end_date)
+        print('stock_price_history: ', stock_price_history)
+        return_table = stock_price_history
 
         #period = 21 #roughly a monthly rebalance schedule... This is something that won't come into
                     #play with a buy and hold initial iteration of the program.
@@ -48,7 +46,7 @@ class BuyAndHold(BackTesterInterface):
             custom_portfolio_weightings.append(initial_value * stocks[weight])
 
         # Creating Portfolio Objects
-        custom_portfolio = Investment_Portfolio(frontend_arr)
+        custom_portfolio = Investment_Portfolio(stock_tickers)
         buy_and_hold_custom = custom_portfolio.buy_and_hold(custom_portfolio_weightings, percent_table)
 
         return_dict = { }
