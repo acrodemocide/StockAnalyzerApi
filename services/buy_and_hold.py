@@ -31,8 +31,9 @@ class BuyAndHold(BackTesterInterface):
     def backtest(self, stocks: Dict[str, float], initial_value: float, start_date: datetime, end_date: datetime) -> Dict[datetime, float]:
         frontend_arr = list(stocks)
 
-        user_data = web.DataReader(frontend_arr, start = start_date.strftime('%Y-%m-%d'), end = end_date.strftime('%Y-%m-%d'))['Adj Close']
-        user_data = pd.DataFrame(user_data)
+        # user_data = web.DataReader(frontend_arr, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))['Adj Close']
+        user_data = yf.download(frontend_arr, start=start_date.strftime('%Y-%m-%d'), end=end_date.strftime('%Y-%m-%d'))['Adj Close']
+        # user_data = pd.DataFrame(user_data)
         cleaned_data = user_data.dropna()
         return_table = cleaned_data
 
@@ -58,7 +59,7 @@ class BuyAndHold(BackTesterInterface):
 
     def __make_return_percentages(self, stock_table,rebal_period=21):
         table = stock_table
-        print('table keys: ', table.keys()) 
+        print('table keys: ', table.keys())
         # First argument '21' is going to need to be the period chosen by the user
         # 21 is an approximately monthly time frame. Mostly used for rebalance,
         # but also used to return monthly statements of portfolio value.
