@@ -13,6 +13,12 @@ class Stock_Data:
         return cleaned_stock_data
 
     def time_period_filter(cleaned_stock_data, rebal_period):
+    # Starts on the last day of the first given month. e.g. if provided Feb 17, 2020, it will use Feb 29
+    # as the last day. 
+    # If the dates are on the weekend/holidays, yfinance just uses the closing price from the last trading
+    # day.  So if Feb 27 were a Friday in this example, the Feb 29 data would use this same price, which is
+    # consistent with what we expect.
+        
     # rebal_period should be handled in the front end with the following options:
     # Monthly - '1ME'
     # Quarterly - '3ME'
