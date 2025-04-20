@@ -12,4 +12,4 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY backend/ ./
 
 # Optional: If you have a default command
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "your_project_name.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "StockAnalyzer.wsgi:application"]
