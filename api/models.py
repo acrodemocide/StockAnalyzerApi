@@ -9,5 +9,5 @@ class Stock(models.Model):
     price = models.DecimalField(decimal_places=2, default=0.00, max_digits=9)
 
 class Portfolio(models.Model):
-    price_history = ArrayField(models.DecimalField(max_digits=10, decimal_places=2))
-    benchmark = ArrayField(models.DecimalField(max_digits=10, decimal_places=2))
+    price_history = ArrayField(models.DecimalField(max_digits=10, decimal_places=2,default=0.00), null=True, blank=True)
+    benchmark = ArrayField(models.DecimalField(max_digits=10, decimal_places=2,default=0.00), null=True, blank=True)
