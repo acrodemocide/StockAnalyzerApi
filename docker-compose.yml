@@ -17,8 +17,6 @@ services:
       dockerfile: backend/Dockerfile
     ports:
       - "8000:8000"
-    env_file:
-      - backend/.env  # if you have environment variables
     volumes:
       - ./backend:/app
     restart: unless-stopped
