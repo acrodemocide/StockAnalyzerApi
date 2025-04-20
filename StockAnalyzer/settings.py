@@ -62,6 +62,7 @@ CORS_ALLOWED_ORIGINS = [
 ] # If this is used, then no need to use `CORS_ALLOW_ALL_ORIGINS = True`
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000',
+    'http://24.199.111.54:3000',
 ]
 
 ROOT_URLCONF = 'StockAnalyzer.urls'
