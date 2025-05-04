@@ -59,10 +59,12 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://24.199.111.54:3000',
+    'http://24.199.111.54:80',
 ] # If this is used, then no need to use `CORS_ALLOW_ALL_ORIGINS = True`
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000',
     'http://24.199.111.54:3000',
+    'http://24.199.111.54:80',
 ]
 
 ROOT_URLCONF = 'StockAnalyzer.urls'
