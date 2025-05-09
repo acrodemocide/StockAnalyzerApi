@@ -46,7 +46,7 @@ class BuyAndHold(BackTesterInterface):
         
         return return_dict
 
-    def __make_return_percentages(self, stock_table,rebal_period=21):
+    def __make_return_percentages(self, stock_table,rebal_period=1):
         table = stock_table
         print('table keys: ', table.keys())
         # First argument '21' is going to need to be the period chosen by the user
